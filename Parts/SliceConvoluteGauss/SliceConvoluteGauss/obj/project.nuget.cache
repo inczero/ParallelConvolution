@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "yAIbkRf7HTYDlToTcakVd3/vQxyGSErjc2vpkDm97Fmny746ZcD58o1EV0d03u8wqnZ/so0IHl7pyb6SX9UPSA==",
+  "success": true,
+  "projectFilePath": "E:\\GitHub\\ParallelConvolution\\Parts\\SliceConvoluteGauss\\SliceConvoluteGauss\\SliceConvoluteGauss.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\incze\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
+    "C:\\Users\\incze\\.nuget\\packages\\system.drawing.common\\6.0.0\\system.drawing.common.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
