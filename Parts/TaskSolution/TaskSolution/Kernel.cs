@@ -1,94 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
 
 namespace TaskSolution {
-    public class Convolution {
-        private Bitmap _image;
-
-        public Convolution(Bitmap image) {
-            _image = image;
-        }
-
-        public Bitmap Image {
-            get { return _image; }
-            set { _image = value; }
-        }
-
-        public Bitmap Filter(Kernel kernel) {
-            int boundary = Convert.ToInt32(Math.Floor(Convert.ToDouble(kernel.Size) / 2));
-
-            Bitmap filteredImage = new Bitmap(_image.Width, _image.Height);
-
-            for (int i = boundary; i < _image.Width - boundary; i++) {
-                for (int j = boundary; j < _image.Height - boundary; j++) {
-                    Rectangle r = new Rectangle(i - boundary, j - boundary, kernel.Size, kernel.Size);
-                    Bitmap subImage = _image.Clone(r, _image.PixelFormat);
-
-                    Color newPixel = convolute(subImage, kernel);
-
-                    filteredImage.SetPixel(i, j, newPixel);
-
-                    subImage.Dispose();
-                }
-            }
-
-            return filteredImage;
-        }
-
-        private Color convolute(Bitmap image, Kernel kernel) {
-            double calcA = 0;
-            double calcR = 0;
-            double calcG = 0;
-            double calcB = 0;
-
-            for (int i = 0; i < image.Width; i++) {
-                for (int j = 0; j < image.Height; j++) {
-                    Color oldPixel = image.GetPixel(i, j);
-
-                    calcA += oldPixel.A * kernel.Weights[i, j];
-                    calcR += oldPixel.R * kernel.Weights[i, j];
-                    calcG += oldPixel.G * kernel.Weights[i, j];
-                    calcB += oldPixel.B * kernel.Weights[i, j];
-                }
-            }
-
-            calcA = calcA / kernel.GetWeightSum();
-            int chA = calculatePixelChannel(calcA);
-
-            calcR = calcR / kernel.GetWeightSum();
-            int chR = calculatePixelChannel(calcR);
-
-            calcG = calcG / kernel.GetWeightSum();
-            int chG = calculatePixelChannel(calcG);
-
-            calcB = calcB / kernel.GetWeightSum();
-            int chB = calculatePixelChannel(calcB);
-
-            image.Dispose();
-
-            return Color.FromArgb(chA, chR, chG, chB);
-        }
-
-        private int calculatePixelChannel(double channelValue) {
-            if (channelValue < 0) {
-                channelValue = 0;
-            }
-            else if (channelValue > 255) {
-                channelValue = 255;
-            }
-
-            return Convert.ToInt32(channelValue);
-        }
-
-    }
-
     public class Kernel {
         private double[,] _weights;
-        private int _size;
 
         public Kernel() { }
 
@@ -102,15 +16,15 @@ namespace TaskSolution {
             set { _weights = value; }
         }
 
-        public int Size {
-            get { return _size; }
+        public int GetSize() {
+            return _weights.GetLength(0);
         }
 
         public double GetWeightSum() {
             double sum = 0;
 
-            for (int i = 0; i < _size; i++) {
-                for (int j = 0; j < _size; j++) {
+            for (int i = 0; i < _weights.GetLength(0); i++) {
+                for (int j = 0; j < _weights.GetLength(1); j++) {
                     sum += _weights[i, j];
                 }
             }
@@ -141,13 +55,23 @@ namespace TaskSolution {
             _weights = mask;
         }
 
+        private void normalizeWeights() {
+            double weightSum = this.GetWeightSum();
+
+            double correctionValue = (1 - weightSum) / (_weights.GetLength(0) * _weights.GetLength(1));
+
+            for (int i = 0; i < _weights.GetLength(0); i++) {
+                for (int j = 0; j < _weights.GetLength(1); j++) {
+                    _weights[i, j] += correctionValue;
+                }
+            }
+        }
+
         public void GenerateGaussianFilter(int size, double sigma) {
             // find better solution to check size
             if (size % 2 == 0) {
                 return;
             }
-
-            _size = size;
 
             double[,] mask = new double[size, size];
 
@@ -165,10 +89,9 @@ namespace TaskSolution {
                 //Console.WriteLine();
             }
 
-            //normalize values!!
-
-
             _weights = mask;
+
+            normalizeWeights();
         }
 
         private double CalculateGaussValue(int x, int y, double sigma) {
