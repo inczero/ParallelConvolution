@@ -32,29 +32,6 @@ namespace TaskSolution {
             return sum;
         }
 
-        public void Generate3x3GaussianFilter(double sigma) {
-            double[,] mask = new double[3, 3];
-
-            //int helperValue = Convert.ToInt32(Math.Floor(Convert.ToDouble(size) / 2));
-
-            //int x = -helperValue;
-            //int y = helperValue;
-
-            mask[0, 0] = CalculateGaussValue(-1, 1, sigma);
-            mask[0, 1] = CalculateGaussValue(1, 0, sigma);
-            mask[0, 2] = CalculateGaussValue(1, 1, sigma);
-
-            mask[1, 0] = CalculateGaussValue(0, -1, sigma);
-            mask[1, 1] = CalculateGaussValue(0, 0, sigma);
-            mask[1, 2] = CalculateGaussValue(0, 1, sigma);
-
-            mask[2, 0] = CalculateGaussValue(-1, -1, sigma);
-            mask[2, 1] = CalculateGaussValue(0, -1, sigma);
-            mask[2, 2] = CalculateGaussValue(1, -1, sigma);
-
-            _weights = mask;
-        }
-
         private void normalizeWeights() {
             double weightSum = this.GetWeightSum();
 
@@ -67,10 +44,9 @@ namespace TaskSolution {
             }
         }
 
-        public void GenerateGaussianFilter(int size, double sigma) {
-            // find better solution to check size
+        public byte GenerateGaussianFilter(int size, double sigma) {
             if (size % 2 == 0) {
-                return;
+                return 1;
             }
 
             double[,] mask = new double[size, size];
@@ -81,17 +57,15 @@ namespace TaskSolution {
                 for (int j = -boundary; j <= boundary; j++) {
                     double weight = CalculateGaussValue(i, j, sigma);
 
-                    //Console.Write("{0}  ", weight);
-
                     mask[i + boundary, j + boundary] = weight;
                 }
-
-                //Console.WriteLine();
             }
 
             _weights = mask;
 
             normalizeWeights();
+
+            return 0;
         }
 
         private double CalculateGaussValue(int x, int y, double sigma) {
