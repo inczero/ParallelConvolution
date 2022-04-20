@@ -11,20 +11,23 @@ namespace TaskSolution {
 
             Kernel kernel = new Kernel();
 
-            kernel.GenerateGaussianFilter(11, 7);
+            kernel.GenerateGaussianFilter(21, 0.85);
 
             //kernel.PrintWeights();
 
-            //Stopwatch sw = new Stopwatch();
-            //sw.Start();
-            //Bitmap filtered = Utilities.Filter(bitmap, kernel);
-            //sw.Stop();
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            Bitmap filtered = Utilities.Filter(bitmap, kernel);
+            sw.Stop();
 
-            //Console.WriteLine(sw.Elapsed);
+            Console.WriteLine("serial time:");
+            Console.WriteLine(sw.Elapsed);
+            Console.WriteLine();
 
             //filtered.Save("C:\\Users\\incze\\Desktop\\workdir\\filtered.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
 
-
+            Stopwatch sw1 = new Stopwatch();
+            sw1.Start();
 
             List<Bitmap> pieces = Slicer.RipApart(bitmap, 4);
 
@@ -38,15 +41,9 @@ namespace TaskSolution {
                 taskList.Add(new Task<Bitmap>(() => Utilities.Filter(item, kernel)));
             }
 
-            Stopwatch sw1 = new Stopwatch();
-            sw1.Start();
-
             taskList.ForEach(task => task.Start());
 
             Task.WaitAll(taskList.ToArray());
-
-            sw1.Stop();
-            Console.WriteLine(sw1.Elapsed);
 
             List<Bitmap> resultList = new List<Bitmap>();
 
@@ -60,7 +57,12 @@ namespace TaskSolution {
 
             Bitmap result = Slicer.PutTogether(resultList, bitmap.VerticalResolution, bitmap.HorizontalResolution);
 
-            result.Save("C:\\Users\\incze\\Desktop\\workdir\\parallel_merged_new.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+            sw1.Stop();
+            Console.WriteLine("parallel time:");
+            Console.WriteLine(sw1.Elapsed);
+            Console.WriteLine();
+
+            //result.Save("C:\\Users\\incze\\Desktop\\workdir\\parallel_merged_new.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
 
             //  -> cut to pieces with a boundary + piece length -> 
             // create filtered image -> the size will be framed image width/height - boundary -> assemble filtered image parts
