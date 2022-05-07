@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace TaskSolution {
@@ -22,6 +23,32 @@ namespace TaskSolution {
                 result.Add(slice);
 
                 pieceIndex += pieceSize;
+            }
+
+            return result;
+        }
+
+        public static ConcurrentBag<BitmapSlice> RipApartFramedWithOverlap(Bitmap image, int pieces, int overlap) {
+            ConcurrentBag<BitmapSlice> result = new ConcurrentBag<BitmapSlice>();
+
+            int innerPieceSize = (image.Width - overlap * 2) / pieces;
+            int cloneX = overlap;
+            int cloneWidth = innerPieceSize + 2 * overlap;
+
+            for (int i = 1; i <= pieces; i++) {
+                if (i == pieces) {
+                    cloneWidth = image.Width - ((i-1) * innerPieceSize);
+                }
+
+                Rectangle rect = new Rectangle(cloneX - overlap, 0, cloneWidth, image.Height);
+
+                Bitmap slice = image.Clone(rect, image.PixelFormat);
+
+                BitmapSlice sliceWithOffset = new BitmapSlice(slice, cloneX - overlap);
+
+                result.Add(sliceWithOffset);
+
+                cloneX += innerPieceSize;
             }
 
             return result;

@@ -11,11 +11,11 @@ namespace TaskSolution {
         public static Bitmap Filter(Bitmap image, Kernel kernel) {
             int borderSize = Convert.ToInt32(Math.Floor(Convert.ToDouble(kernel.GetSize()) / 2));
 
-            Bitmap imageWithBorder = drawBorder(image, borderSize, Color.Gray);
+            Bitmap imageWithBorder = DrawBorder(image, borderSize, Color.Gray );
 
             return filterExtendedImage(imageWithBorder, kernel);
         }
-        private static Bitmap drawBorder(Bitmap image, int borderSize, Color borderColor) {
+        public static Bitmap DrawBorder(Bitmap image, int borderSize, Color borderColor) {
             int widthWithBorder = image.Width + 2 * borderSize;
             int heightWithBorder = image.Height + 2 * borderSize;
 
