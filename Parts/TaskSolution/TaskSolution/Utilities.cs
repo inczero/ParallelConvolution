@@ -13,8 +13,9 @@ namespace TaskSolution {
 
             Bitmap imageWithBorder = DrawBorder(image, borderSize, Color.Gray );
 
-            return filterExtendedImage(imageWithBorder, kernel);
+            return FilterExtendedImage(imageWithBorder, kernel);
         }
+        
         public static Bitmap DrawBorder(Bitmap image, int borderSize, Color borderColor) {
             int widthWithBorder = image.Width + 2 * borderSize;
             int heightWithBorder = image.Height + 2 * borderSize;
@@ -38,7 +39,7 @@ namespace TaskSolution {
             return imageWithBorder;
         }
 
-        private static Bitmap filterExtendedImage(Bitmap image, Kernel kernel) {
+        public static Bitmap FilterExtendedImage(Bitmap image, Kernel kernel) {
             int boundary = Convert.ToInt32(Math.Floor(Convert.ToDouble(kernel.GetSize()) / 2));
 
             Bitmap filteredImage = new Bitmap(image.Width - 2 * boundary, image.Height - 2 * boundary);
