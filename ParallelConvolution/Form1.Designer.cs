@@ -23,6 +23,7 @@
         ///  the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -32,7 +33,7 @@
             this.radioButtonParallelEqual = new System.Windows.Forms.RadioButton();
             this.radioButtonParallelBag = new System.Windows.Forms.RadioButton();
             this.buttonConvolute = new System.Windows.Forms.Button();
-            this.buttonCancel = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.buttonSelectImage = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.textBoxKernelSize = new System.Windows.Forms.TextBox();
@@ -41,9 +42,10 @@
             this.textBoxTaskNumber = new System.Windows.Forms.TextBox();
             this.textBoxDimensions = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBoxExecutionTime = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.textBoxExecutionTime = new System.Windows.Forms.TextBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -137,15 +139,17 @@
             this.buttonConvolute.TabIndex = 8;
             this.buttonConvolute.Text = "Convolute";
             this.buttonConvolute.UseVisualStyleBackColor = true;
+            this.buttonConvolute.Click += new System.EventHandler(this.buttonConvolute_Click);
             // 
-            // buttonCancel
+            // buttonSave
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(775, 471);
-            this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(110, 50);
-            this.buttonCancel.TabIndex = 9;
-            this.buttonCancel.Text = "Cancel";
-            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonSave.Location = new System.Drawing.Point(775, 471);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(110, 50);
+            this.buttonSave.TabIndex = 9;
+            this.buttonSave.Text = "Save image";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // buttonSelectImage
             // 
@@ -213,14 +217,6 @@
             this.label6.TabIndex = 17;
             this.label6.Text = "Execution time";
             // 
-            // textBoxExecutionTime
-            // 
-            this.textBoxExecutionTime.Location = new System.Drawing.Point(760, 592);
-            this.textBoxExecutionTime.Name = "textBoxExecutionTime";
-            this.textBoxExecutionTime.ReadOnly = true;
-            this.textBoxExecutionTime.Size = new System.Drawing.Size(125, 27);
-            this.textBoxExecutionTime.TabIndex = 18;
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -230,17 +226,30 @@
             this.label7.TabIndex = 19;
             this.label7.Text = "Select mode:";
             // 
-            // backgroundWorker
+            // backgroundWorker1
             // 
-            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // textBoxExecutionTime
+            // 
+            this.textBoxExecutionTime.Location = new System.Drawing.Point(760, 592);
+            this.textBoxExecutionTime.Name = "textBoxExecutionTime";
+            this.textBoxExecutionTime.ReadOnly = true;
+            this.textBoxExecutionTime.Size = new System.Drawing.Size(125, 27);
+            this.textBoxExecutionTime.TabIndex = 20;
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(912, 683);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.textBoxExecutionTime);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.textBoxDimensions);
             this.Controls.Add(this.textBoxTaskNumber);
@@ -249,7 +258,7 @@
             this.Controls.Add(this.textBoxKernelSize);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.buttonSelectImage);
-            this.Controls.Add(this.buttonCancel);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonConvolute);
             this.Controls.Add(this.radioButtonParallelBag);
             this.Controls.Add(this.radioButtonParallelEqual);
@@ -279,7 +288,7 @@
         private System.Windows.Forms.RadioButton radioButtonParallelEqual;
         private System.Windows.Forms.RadioButton radioButtonParallelBag;
         private System.Windows.Forms.Button buttonConvolute;
-        private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonSelectImage;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxKernelSize;
@@ -288,8 +297,9 @@
         private System.Windows.Forms.TextBox textBoxTaskNumber;
         private System.Windows.Forms.TextBox textBoxDimensions;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBoxExecutionTime;
         private System.Windows.Forms.Label label7;
-        private System.ComponentModel.BackgroundWorker backgroundWorker;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.TextBox textBoxExecutionTime;
+        private System.Windows.Forms.Timer timer1;
     }
 }

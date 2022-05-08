@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ParallelConvolution {
-    public static class Utilities {
+    public static class FilterUtils {
 
         public static Bitmap DrawBorder(Bitmap image, int borderSize, Color borderColor) {
             int widthWithBorder = image.Width + 2 * borderSize;

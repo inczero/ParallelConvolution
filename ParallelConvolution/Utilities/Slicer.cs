@@ -31,16 +31,26 @@ namespace ParallelConvolution {
             return result;
         }
 
-        public static List<BitmapSlice> SliceFramedWithOverlapIntoList(Bitmap image, int pieces, int overlap) {
-            ConcurrentBag<BitmapSlice> bag = SliceFramedWithOverlap(image, pieces, overlap);
+        public static List<Bitmap> SliceFramedWithOverlapIntoList(Bitmap image, int pieces, int overlap) {
+            List<Bitmap> result = new List<Bitmap>();
 
-            List<BitmapSlice> result = new List<BitmapSlice>();
+            int innerPieceSize = (image.Width - overlap * 2) / pieces;
+            int cloneX = overlap;
+            int cloneWidth = innerPieceSize + 2 * overlap;
 
-            foreach (BitmapSlice slice in bag) {
+            for (int i = 1; i <= pieces; i++) {
+                if (i == pieces) {
+                    cloneWidth = image.Width - ((i - 1) * innerPieceSize);
+                }
+
+                Rectangle rect = new Rectangle(cloneX - overlap, 0, cloneWidth, image.Height);
+
+                Bitmap slice = image.Clone(rect, image.PixelFormat);
+
                 result.Add(slice);
-            }
 
-            bag.Clear();
+                cloneX += innerPieceSize;
+            }
 
             return result;
         }

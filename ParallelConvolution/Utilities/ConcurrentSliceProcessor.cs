@@ -17,7 +17,7 @@ namespace ParallelConvolution {
                 BitmapSlice slice;
 
                 if (slices.TryTake(out slice)) {
-                    Bitmap filteredSlice = Utilities.Filter(slice.Image, kernel);
+                    Bitmap filteredSlice = FilterUtils.Filter(slice.Image, kernel);
 
                     slice.Image = filteredSlice;
 

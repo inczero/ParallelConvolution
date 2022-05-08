@@ -9,25 +9,33 @@ using System.Threading.Tasks;
 namespace ParallelConvolution {
     public static class Modes {
 
-        public static Bitmap RunSequential(Bitmap bitmap, int kernelSize, int sigma) {
-            Kernel kernel = new Kernel();
-            kernel.GenerateGaussianFilter(kernelSize, sigma);
-
-            return Utilities.Filter(bitmap, kernel);
-        }
-
-        public static Bitmap RunParallelEqual(Bitmap bitmap, int kernelSize, int sigma, int pieceNumber) {
+        public static Bitmap RunSequential(Bitmap bitmap, int kernelSize, double sigma) {
             Kernel kernel = new Kernel();
             kernel.GenerateGaussianFilter(kernelSize, sigma);
 
             int overlap = Convert.ToInt32(Math.Floor(Convert.ToDouble(kernel.GetSize()) / 2));
 
-            List<BitmapSlice> pieces = Slicer.SliceFramedWithOverlapIntoList(bitmap, pieceNumber, overlap);
+            bitmap = FilterUtils.DrawBorder(bitmap, overlap, Color.Gray);
+
+            return FilterUtils.Filter(bitmap, kernel);
+        }
+
+        public static Bitmap RunParallelEqual(Bitmap bitmap, int kernelSize, double sigma, int pieceNumber) {
+            
+
+            int overlap = Convert.ToInt32(Math.Floor(Convert.ToDouble(kernelSize) / 2));
+
+            bitmap = FilterUtils.DrawBorder(bitmap, overlap, Color.Gray);
+
+            List<Bitmap> pieces = Slicer.SliceFramedWithOverlapIntoList(bitmap, pieceNumber, overlap);
 
             List<Task<Bitmap>> taskList = new List<Task<Bitmap>>();
 
-            foreach (BitmapSlice item in pieces) {
-                taskList.Add(new Task<Bitmap>(() => Utilities.Filter(item.Image, kernel)));
+            foreach (Bitmap slice in pieces) {
+                Kernel kernel = new Kernel();
+                kernel.GenerateGaussianFilter(kernelSize, sigma);
+
+                taskList.Add(new Task<Bitmap>(() => FilterUtils.Filter(slice, kernel)));
             }
 
             taskList.ForEach(task => task.Start());
@@ -36,22 +44,18 @@ namespace ParallelConvolution {
 
             List<Bitmap> resultList = new List<Bitmap>();
 
-            int index = 0;
             foreach (Task<Bitmap> task in taskList) {
                 resultList.Add(task.Result);
-
-                index++;
-                task.Result.Save("C:\\Users\\incze\\Desktop\\workdir\\parallel_filtered_" + index.ToString() + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
             }
 
             return Slicer.PutTogetherFromList(resultList, bitmap.VerticalResolution, bitmap.HorizontalResolution); ;
         }
 
-        public static Bitmap RunParallelBag(Bitmap bitmap, int kernelSize, int sigma, int pieceNumber, int taskNumber) {
-            Kernel kernel = new Kernel();
-            kernel.GenerateGaussianFilter(kernelSize, sigma);
+        public static Bitmap RunParallelBag(Bitmap bitmap, int kernelSize, double sigma, int pieceNumber, int taskNumber) {
 
-            int overlap = Convert.ToInt32(Math.Floor(Convert.ToDouble(kernel.GetSize()) / 2));
+            int overlap = Convert.ToInt32(Math.Floor(Convert.ToDouble(kernelSize) / 2));
+
+            bitmap = FilterUtils.DrawBorder(bitmap, overlap, Color.Gray);
 
             ConcurrentBag<BitmapSlice> slices = Slicer.SliceFramedWithOverlap(bitmap,pieceNumber, overlap);
             ConcurrentBag<BitmapSlice> filtered = new ConcurrentBag<BitmapSlice>();
@@ -59,6 +63,9 @@ namespace ParallelConvolution {
             List<Task> taskList = new List<Task>();
 
             for (int i = 0; i < taskNumber; i++) {
+                Kernel kernel = new Kernel();
+                kernel.GenerateGaussianFilter(kernelSize, sigma);
+
                 ConcurrentSliceProcessor processor = new ConcurrentSliceProcessor(kernel);
 
                 taskList.Add(new Task(() => processor.Work(slices, filtered), TaskCreationOptions.LongRunning));
