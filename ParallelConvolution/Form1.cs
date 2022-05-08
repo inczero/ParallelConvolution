@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -61,7 +62,41 @@ namespace ParallelConvolution {
         }
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
+            // check if not null
+            Bitmap bitmap = new Bitmap(pictureBox.Image);
+            Bitmap filtered;
+
+            // use TryParse
+            int kernelSize = Int32.Parse(textBoxKernelSize.Text);
+            int sigma = Int32.Parse(textBoxSigma.Text);
+
+            // add input validation!!!
+            if (radioButtonSequential.Checked) {
+
+                filtered = Modes.RunSequential(bitmap, kernelSize, sigma);
+
+            } else if (radioButtonParallelEqual.Checked) {
+
+                int pieceNumber = Int32.Parse(textBoxPieceNumber.Text);
+
+                filtered = Modes.RunParallelEqual(bitmap, kernelSize, sigma, pieceNumber);
+
+            } else if (radioButtonParallelBag.Checked) {
+
+                int pieceNumber = Int32.Parse(textBoxPieceNumber.Text);
+                int taskNumber = Int32.Parse(textBoxTaskNumber.Text);
+
+                filtered = Modes.RunParallelBag(bitmap, kernelSize, sigma, pieceNumber, taskNumber);
+
+            }
+
+            stopwatch.Stop();
+
+            pictureBox.Image = filtered;
+            textBoxExecutionTime.Text = stopwatch.Elapsed.ToString();
         }
     }
 }
