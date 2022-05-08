@@ -77,15 +77,12 @@ namespace ParallelConvolution {
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e) {
             stopwatch.Restart();
 
-            // check if not null
             Bitmap bitmap = new Bitmap(pictureBox.Image);
             Bitmap filtered;
 
-            // use TryParse
             int kernelSize = Int32.Parse(textBoxKernelSize.Text);
             double sigma = Double.Parse(textBoxSigma.Text);
 
-            // add input validation!!!
             if (radioButtonSequential.Checked) {
 
                 filtered = Modes.RunSequential(bitmap, kernelSize, sigma);
