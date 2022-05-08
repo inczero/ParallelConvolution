@@ -79,7 +79,7 @@ namespace TaskSolution {
             int width = 0;
 
             foreach (BitmapSlice piece in imagePieces) {
-                width += piece.image.Width;
+                width += piece.Image.Width;
             }
 
             return width;
@@ -91,7 +91,7 @@ namespace TaskSolution {
 
             BitmapSlice randomSlice;
             if (slices.TryPeek(out randomSlice)) {
-                height = randomSlice.image.Height;
+                height = randomSlice.Image.Height;
             } else {
                 return null;
             }
@@ -105,8 +105,8 @@ namespace TaskSolution {
                 g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 
                 foreach (BitmapSlice slice in slices) {
-                    Rectangle r = new Rectangle(slice.offset, 0, slice.image.Width, slice.image.Height);
-                    g.DrawImage(slice.image, r);
+                    Rectangle r = new Rectangle(slice.Offset, 0, slice.Image.Width, slice.Image.Height);
+                    g.DrawImage(slice.Image, r);
                 }
             }
 

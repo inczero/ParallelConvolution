@@ -17,9 +17,9 @@ namespace TaskSolution {
                 BitmapSlice slice;
 
                 if (slices.TryTake(out slice)) {
-                    Bitmap filteredSlice = Utilities.Filter(slice.image, kernel);
+                    Bitmap filteredSlice = Utilities.Filter(slice.Image, kernel);
 
-                    slice.image = filteredSlice;
+                    slice.Image = filteredSlice;
 
                     filtered.Add(slice);
                 }

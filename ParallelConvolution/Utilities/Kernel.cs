@@ -2,29 +2,29 @@
 
 namespace TaskSolution {
     public class Kernel {
-        private double[,] _weights;
+        private double[,] weights;
 
         public Kernel() { }
 
         public Kernel(double[,] kernel) {
-            _weights = kernel;
+            weights = kernel;
         }
 
         public double[,] Weights {
-            get { return _weights; }
-            set { _weights = value; }
+            get { return weights; }
+            set { weights = value; }
         }
 
         public int GetSize() {
-            return _weights.GetLength(0);
+            return weights.GetLength(0);
         }
 
         public double GetWeightSum() {
             double sum = 0;
 
-            for (int i = 0; i < _weights.GetLength(0); i++) {
-                for (int j = 0; j < _weights.GetLength(1); j++) {
-                    sum += _weights[i, j];
+            for (int i = 0; i < weights.GetLength(0); i++) {
+                for (int j = 0; j < weights.GetLength(1); j++) {
+                    sum += weights[i, j];
                 }
             }
 
@@ -34,11 +34,11 @@ namespace TaskSolution {
         private void normalizeWeights() {
             double weightSum = this.GetWeightSum();
 
-            double correctionValue = (1 - weightSum) / (_weights.GetLength(0) * _weights.GetLength(1));
+            double correctionValue = (1 - weightSum) / (weights.GetLength(0) * weights.GetLength(1));
 
-            for (int i = 0; i < _weights.GetLength(0); i++) {
-                for (int j = 0; j < _weights.GetLength(1); j++) {
-                    _weights[i, j] += correctionValue;
+            for (int i = 0; i < weights.GetLength(0); i++) {
+                for (int j = 0; j < weights.GetLength(1); j++) {
+                    weights[i, j] += correctionValue;
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace TaskSolution {
                 }
             }
 
-            _weights = mask;
+            weights = mask;
 
             normalizeWeights();
 
@@ -75,13 +75,13 @@ namespace TaskSolution {
         }
 
         public void PrintWeights() {
-            if (_weights == null) {
+            if (weights == null) {
                 return;
             }
 
-            for (int i = 0; i < _weights.GetLength(0); i++) {
-                for (int j = 0; j < _weights.GetLength(1); j++) {
-                    Console.Write("{0}  ", _weights[i, j]);
+            for (int i = 0; i < weights.GetLength(0); i++) {
+                for (int j = 0; j < weights.GetLength(1); j++) {
+                    Console.Write("{0}  ", weights[i, j]);
                 }
                 Console.WriteLine();
             }
