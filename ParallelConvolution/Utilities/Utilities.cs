@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskSolution {
+namespace ParallelConvolution {
     public static class Utilities {
 
         public static Bitmap DrawBorder(Bitmap image, int borderSize, Color borderColor) {

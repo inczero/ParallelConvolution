@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskSolution {
+namespace ParallelConvolution {
     internal class ConcurrentSliceProcessor {
         private Kernel kernel;
 

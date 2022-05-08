@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace TaskSolution {
+namespace ParallelConvolution {
     public static class Slicer {
 
         public static ConcurrentBag<BitmapSlice> SliceFramedWithOverlap(Bitmap image, int pieces, int overlap) {

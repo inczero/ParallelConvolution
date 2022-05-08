@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace TaskSolution {
+namespace ParallelConvolution {
     public class BitmapSlice {
         private Bitmap image;
         private int offset = -1;

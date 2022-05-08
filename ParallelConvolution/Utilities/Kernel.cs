@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TaskSolution {
+namespace ParallelConvolution {
     public class Kernel {
         private double[,] weights;
 
