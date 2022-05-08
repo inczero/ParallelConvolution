@@ -176,6 +176,7 @@
             this.textBoxKernelSize.Name = "textBoxKernelSize";
             this.textBoxKernelSize.Size = new System.Drawing.Size(125, 27);
             this.textBoxKernelSize.TabIndex = 12;
+            this.textBoxKernelSize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxKernelSize_KeyPress);
             // 
             // textBoxSigma
             // 
@@ -183,6 +184,7 @@
             this.textBoxSigma.Name = "textBoxSigma";
             this.textBoxSigma.Size = new System.Drawing.Size(125, 27);
             this.textBoxSigma.TabIndex = 13;
+            this.textBoxSigma.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxSigma_KeyPress);
             // 
             // textBoxPieceNumber
             // 
@@ -191,6 +193,7 @@
             this.textBoxPieceNumber.Name = "textBoxPieceNumber";
             this.textBoxPieceNumber.Size = new System.Drawing.Size(125, 27);
             this.textBoxPieceNumber.TabIndex = 14;
+            this.textBoxPieceNumber.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxPieceNumber_KeyPress);
             // 
             // textBoxTaskNumber
             // 
@@ -199,6 +202,7 @@
             this.textBoxTaskNumber.Name = "textBoxTaskNumber";
             this.textBoxTaskNumber.Size = new System.Drawing.Size(125, 27);
             this.textBoxTaskNumber.TabIndex = 15;
+            this.textBoxTaskNumber.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxTaskNumber_KeyPress);
             // 
             // textBoxDimensions
             // 
