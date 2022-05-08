@@ -67,7 +67,7 @@ namespace ParallelConvolution {
 
             // check if not null
             Bitmap bitmap = new Bitmap(pictureBox.Image);
-            Bitmap filtered;
+            Bitmap filtered = new Bitmap(pictureBox.Image);
 
             // use TryParse
             int kernelSize = Int32.Parse(textBoxKernelSize.Text);
